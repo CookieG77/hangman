@@ -1,4 +1,4 @@
-module github.com/CookieG77/hangman
+module HangmanDelux
 
 go 1.23.1
 
