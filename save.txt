@@ -1,0 +1,5 @@
+{
+ "health": 9,
+ "hidden": "___n",
+ "randomWord": "coin"
+}
