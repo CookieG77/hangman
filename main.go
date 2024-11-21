@@ -1,11 +1,12 @@
 package main
 
 import (
-	hgd "HangmanDelux/functions"
 	"fmt"
 	"os"
 	"os/signal"
 	"slices"
+
+	hgd "github.com/CookieG77/hangman/functions"
 )
 
 func main() {
