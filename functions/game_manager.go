@@ -45,15 +45,15 @@ var accents map[string]string = map[string]string{
 	"Ñ": "N",
 }
 
-type gameData struct {
+type GameData struct {
 	health int
 	hidden string
 	word   string
 }
 
 // Fonction pour créer la structure de donnée d'une partie.
-func CreateGameStructure(health int, hidden string, randomWord string) gameData {
-	return gameData{
+func CreateGameStructure(health int, hidden string, randomWord string) GameData {
+	return GameData{
 		health: health,
 		hidden: hidden,
 		word:   randomWord,
@@ -62,7 +62,7 @@ func CreateGameStructure(health int, hidden string, randomWord string) gameData 
 
 // Fonction temporaire pour pas que le main ne pète un cable
 func Start(words []string, asciiArt []string, logo string, alphabet []string, load_save bool, save map[string]interface{}) {
-	var game gameData
+	var game GameData
 	if load_save {
 		game = CreateGameStructure((int)(save["health"].(float64)), save["hidden"].(string), save["randomWord"].(string))
 	} else {
@@ -75,7 +75,7 @@ func Start(words []string, asciiArt []string, logo string, alphabet []string, lo
 }
 
 // Boucle du jeu
-func GameLoop(game *gameData, words []string, asciiArt []string, logo string, alphabet []string) {
+func GameLoop(game *GameData, words []string, asciiArt []string, logo string, alphabet []string) {
 	playing := true
 	tmp := ""
 	for playing {
@@ -100,7 +100,7 @@ func GetRandomWord(words []string) string {
 }
 
 // Place la lettre entrée par le joueur dans le mot caché
-func PlaceLetterInWord(game *gameData, letter string) string {
+func PlaceLetterInWord(game *GameData, letter string) string {
 	var res string
 	for i, l := range (*game).word {
 		replace := false
@@ -117,7 +117,7 @@ func PlaceLetterInWord(game *gameData, letter string) string {
 
 // Créee le mot invisible, prend en argument le mot
 // généré ainsi qu'un string vide
-func CreateInvisibleWord(game *gameData) {
+func CreateInvisibleWord(game *GameData) {
 	for _, c := range (*game).word {
 		if c == ' ' {
 			(*game).hidden += " "
@@ -143,7 +143,7 @@ func ShowWord(hidden string) {
 // Récupère la lettre entrée par le joueur et vérifie si elle est dans le mot
 // et renvoi le mot caché avec des lettres révélé ou non.
 // Cette fonction gère presque l'entièreté du jeu.
-func GetPlayerInput(game *gameData, playing *bool, words []string, asciiArt []string, logo string, alphabet []string) string {
+func GetPlayerInput(game *GameData, playing *bool, words []string, asciiArt []string, logo string, alphabet []string) string {
 	var res string
 	var letter string
 	fmt.Println(GetASCIIString(alphabet, (*game).hidden))
@@ -299,7 +299,7 @@ func GetASCIIString(ASCIIart []string, hidden string) string {
 }
 
 // Permet de sauvegarder la partie en cours
-func SaveGame(game *gameData) {
+func SaveGame(game *GameData) {
 	save := map[string]interface{}{
 		"health":     (*game).health,
 		"hidden":     (*game).hidden,
