@@ -60,6 +60,30 @@ func CreateGameStructure(health int, hidden string, randomWord string) GameData 
 	}
 }
 
+func GameStrucGetHealth(game GameData) int {
+	return game.health
+}
+
+func GameStrucGetHidden(game GameData) string {
+	return game.hidden
+}
+
+func GameStrucGetWord(game GameData) string {
+	return game.word
+}
+
+func GameStrucSetHealth(game *GameData, val int) {
+	(*game).health = val
+}
+
+func GameStrucSetHidden(game *GameData, val string) {
+	(*game).hidden = val
+}
+
+func GameStrucSetWord(game *GameData, val string) {
+	(*game).word = val
+}
+
 // Fonction temporaire pour pas que le main ne pète un cable
 func Start(words []string, asciiArt []string, logo string, alphabet []string, load_save bool, save map[string]interface{}) {
 	var game GameData
