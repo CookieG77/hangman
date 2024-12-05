@@ -234,6 +234,20 @@ func GetPlayerInput(game *GameData, playing *bool, words []string, asciiArt []st
 	return res
 }
 
+func CheckPlayerInput(game *GameData, input string) {
+	input = NormalizeText(strings.ToLower(input), accents) // Retire les accents
+	res := PlaceLetterInWord(game, input)
+	if len(input) == 1 {
+		if res == (*game).hidden {
+			(*game).health -= 1
+		}
+	} else {
+		if res != (*game).word {
+			(*game).health -= 2
+		}
+	}
+}
+
 // Fonction pour vérifier si la lettre entrée est déjà révélé dans le mot
 // Args: hidden = mot vu par le joueur, letter = lettre entrée en paramètre
 // Condition: à lancer uniquement si l'input du joueur est égal à 1
