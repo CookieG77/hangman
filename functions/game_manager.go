@@ -139,6 +139,21 @@ func PlaceLetterInWord(game *GameData, letter string) string {
 	return res
 }
 
+func PlaceLetterInWord2(hidden string, word string, letter string) string {
+	var res string
+	for i, l := range word {
+		replace := false
+		if string(l) == letter {
+			replace = true
+			res += string(l)
+		}
+		if !replace {
+			res += string(hidden[i])
+		}
+	}
+	return res
+}
+
 // Créee le mot invisible, prend en argument le mot
 // généré ainsi qu'un string vide
 func CreateInvisibleWord(game *GameData) {
@@ -157,6 +172,26 @@ func CreateInvisibleWord(game *GameData) {
 			revealedLetter += 1
 		}
 	}
+}
+
+func CreateInvisibleWord2(word string) string {
+	hidden := ""
+	for _, c := range word {
+		if c == ' ' {
+			hidden += " "
+		} else {
+			hidden += "_"
+		}
+	}
+	// Enfin on révèle n lettres du mot basé sur la longueur du mot
+	for revealedLetter := 0; revealedLetter < (len(word)/2)-1; {
+		letter := string(word[rand.IntN(len(word))])
+		if letter != " " && !strings.Contains(hidden, letter) {
+			hidden = PlaceLetterInWord2(hidden, word, letter)
+			revealedLetter += 1
+		}
+	}
+	return hidden
 }
 
 // Affiche le mot à trouver
