@@ -10,7 +10,7 @@ import (
 	"github.com/fatih/color"
 )
 
-var accents map[string]string = map[string]string{
+var Accents map[string]string = map[string]string{
 	"é": "e",
 	"è": "e",
 	"ê": "e",
@@ -208,7 +208,7 @@ func GetPlayerInput(game *GameData, playing *bool, words []string, asciiArt []st
 	fmt.Println(GetASCIIString(alphabet, (*game).hidden))
 	fmt.Println("Ecrivez une lettre:")
 	fmt.Scan(&letter)                       // Recupère l'entrée du joueur
-	letter = NormalizeText(letter, accents) // retire les accents/majuscule
+	letter = NormalizeText(letter, Accents) // retire les accents/majuscule
 	if letter == "stop" {                   // Permet l'arret de la partie en cours et de sauvegarder la partie en cours
 		return "stop"
 	}
@@ -270,7 +270,7 @@ func GetPlayerInput(game *GameData, playing *bool, words []string, asciiArt []st
 }
 
 func CheckPlayerInput(game *GameData, input string) {
-	input = NormalizeText(strings.ToLower(input), accents) // Retire les accents
+	input = NormalizeText(strings.ToLower(input), Accents) // Retire les accents
 	res := PlaceLetterInWord(game, input)
 	if len(input) == 1 {
 		if res == (*game).hidden {
