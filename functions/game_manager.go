@@ -103,7 +103,6 @@ func GameLoop(game *GameData, words []string, asciiArt []string, logo string, al
 	playing := true
 	tmp := ""
 	for playing {
-		ClearCmd()
 		PrintLogo(logo)
 		PrintHangman(asciiArt, game.health)
 		tmp = GetPlayerInput(game, &playing, words, asciiArt, logo, alphabet)
@@ -204,7 +203,6 @@ func GetPlayerInput(game *GameData, playing *bool, words []string, asciiArt []st
 	}
 	if (*game).word == res || (*game).health == 0 || letter == (*game).word {
 		for bonneReponse := false; !bonneReponse; {
-			ClearCmd()
 			PrintLogo(logo)
 			PrintHangman(asciiArt, (*game).health)
 			var answer string
@@ -234,16 +232,50 @@ func GetPlayerInput(game *GameData, playing *bool, words []string, asciiArt []st
 	return res
 }
 
-func CheckPlayerInput(game *GameData, input string) {
-	input = NormalizeText(strings.ToLower(input), accents) // Retire les accents
-	res := PlaceLetterInWord(game, input)
-	if len(input) == 1 {
+// Recupère l'entré et le compare avec le mot à trouver
+// Retire 1 ou 2 vie si l'entré n'est pas de mot
+// Sinon place l'entré dans le mot caché
+func CheckPlayerInput(game *GameData, input *string, letter_list *[]string) string {
+	*input = NormalizeText(strings.ToLower(*input), accents) // Retire les accents et met en minuscule
+	res := PlaceLetterInWord(game, *input)
+	if ContainsString(*letter_list, *input) {
+		return res
+	}
+	// Vérifie si l'input est dans le mot
+	if len(*input) == 1 {
 		if res == (*game).hidden {
 			(*game).health -= 1
 		}
 	} else {
-		if res != (*game).word {
+		if *input == (*game).word {
+			return *input
+		} else {
 			(*game).health -= 2
+		}
+	}
+	*letter_list = append(*letter_list, *input)
+	return res
+}
+
+// Vérifie si l'element str est présent dans la liste s (string)
+func ContainsString(s []string, str string) bool {
+	for _, v := range s {
+		if v == str {
+			return true
+		}
+	}
+
+	return false
+}
+
+// Function qui recupère les lettres déjà révélé dans le mot et les
+// ajoute a la liste letter_list
+func GetRevealedLetters(game *GameData, letter_list *[]string) {
+	for _, c := range (*game).hidden {
+		if c != ' ' && c != '_' {
+			if !ContainsString(*letter_list, string(c)) {
+				*letter_list = append(*letter_list, string(c))
+			}
 		}
 	}
 }
